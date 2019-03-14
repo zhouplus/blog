@@ -21,6 +21,10 @@
 
 - [ ] [分布式架构知识体系必读](https://mp.weixin.qq.com/s/izSkX-_3EShQnhc9DZatKg)
 
+## 新技术
+- [ ] [伯克利推出世界最快的KVS数据库Anna：秒杀Redis和Cassandra](
+https://mp.weixin.qq.com/s/3WmGpZkEuSz-ox_2CPCsqg)
+
 ## docsify 文章编写
 - 官方文档 https://docsify.js.org/#/zh-cn/quickstart
 - github地址 https://github.com/docsifyjs/docsify-cli
