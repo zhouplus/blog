@@ -1,9 +1,4 @@
-* [首页](/intro)
-* [linux](linux/guide)
-* [java](java/guide)
-
-
-
+* [博客首页](/intro)
 * [Linux](linux/guide)
   * [计算机组成原理](linux/computer_arch)
   * [CPU](linux/cpu)
@@ -16,3 +11,7 @@
 
 * [java](java/guide)
   * [聊聊JVM](java/jvm)
+
+
+* [技术杂谈](tech/guide)
+  * [关于技术本质与软件架构的思考](tech/performance)
