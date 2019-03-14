@@ -16,6 +16,10 @@
 - [ ] C10K问题中文版 https://blog.csdn.net/ly402609921/article/details/5810419
 
 
+## 架构相关
+- [ ] [亿级用户下的新浪微博平台架构](https://www.infoq.cn/article/weibo-platform-archieture)
+
+- [ ] [分布式架构知识体系必读](https://mp.weixin.qq.com/s/izSkX-_3EShQnhc9DZatKg)
 
 ## docsify 文章编写
 - 官方文档 https://docsify.js.org/#/zh-cn/quickstart
