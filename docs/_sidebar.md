@@ -14,8 +14,7 @@
   * [返回码的前世今生](java/返回码的前世今生)
   * [ifelse优化](java/ifelse优化)
   * [git笔记](java/git笔记)
+  * [java单机高并发](java/java单机高并发)
 * [技术杂谈](tech/guide)
   * [关于技术本质与软件架构的思考](tech/performance)
   * [性能角度来看锁的产生原理](tech/performance_lock)
-
-  
