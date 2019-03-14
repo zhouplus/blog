@@ -12,7 +12,7 @@
   * [聊聊JVM](java/jvm)
   * [关于Java判空的思考](java/关于Java判空的思考)
   * [返回码的前世今生](java/返回码的前世今生)
-  * [if else优化](java/ifelse优化)
+  * [ifelse优化](java/ifelse优化)
   * [git笔记](java/git笔记)
 * [技术杂谈](tech/guide)
   * [关于技术本质与软件架构的思考](tech/performance)
