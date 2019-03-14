@@ -59,6 +59,7 @@
     }
    
 ```
+
 抽取到类的私有方法内做if...else判空校验
 
 ```
@@ -112,6 +113,8 @@ public enum RetEnum {
 #### 现状3
 1. 设置该对象的终的某些字段需要判空
 2. 调用反射对这些对象进行判空
+3. 根据判断返回结果
+
 ```
 public RespRet bizDeal(RequestVo requestVo) {
         //字段校验,对version、userId、sysId进行基本字段校验
@@ -121,10 +124,11 @@ public RespRet bizDeal(RequestVo requestVo) {
         }else{
             // 组装并返回返回错误信息
         }
-    }
-
+}
 ```
+
 校验方法ValidUtil#validXXXReq
+
 ```
 /**
  *@return 校验通过返回true,校验不通过返回fasle
@@ -132,7 +136,6 @@ public RespRet bizDeal(RequestVo requestVo) {
 public static boolean  validXXXReq(Object beValidObejct,String[] paramas) {
         //对beValidObejct进行field反射，取params中的字段进行判空等处理
 }
-
 ```
 
 ##### 优点
@@ -143,6 +146,7 @@ public static boolean  validXXXReq(Object beValidObejct,String[] paramas) {
 
 ### 解决方案
 基于现状3的缺点，我们自然而然想到，如果想要灵活那么我把规则开发给调用者自己去配置就能实现。那么怎么开放给你调用者呢。对调用者侵入最小的方式可能就是使用Annotation了。那么我们就可以根据不同的Annotation去进行不同的判断。比如定义了@ParamNullcheck的Annotation当我们反射去判断的时候就可以判空。比如定义了@ParamNumberCheck的Annotation当我们反射取判断的时候就可以判断数字是否为空、为0。
+
 ```
 @Retention(RetentionPolicy.RUNTIME)
 @Target({java.lang.annotation.ElementType.FIELD})
@@ -154,16 +158,19 @@ public @interface ParamNullcheck {
 public @interface ParamNumberCheck{
 }
 ```
+
 更进一步，我们可以支持表达式运算的注解，比如@ParamExpressionCheck,在使用的时候可以判断表达式判断，参考 Aviator 能扩展出更复杂的表达式
+
 ```
 @Retention(RetentionPolicy.RUNTIME)
 @Target({java.lang.annotation.ElementType.FIELD})
 public @interface ParamExpressionCheck {
     String value();
 }
-
 ```
+
 使用的时候，在需要被我们校验的java对象上使用我们的注解，当我们反射校验的时候读取注解就知道我们该做什么样的判断，甚至可以做到该返回什么信息，甚至我们可以绑定一个校验不通过的时候的处理类(如CustomDataErroHander)返回结果处理。但是要甚用，或者说用一个比较通用的处理类。避免本末倒置。我们的出发点是为了让调用方更简单，而不是更复杂。
+
 ```
 //需要校验的Java对象
 public class BizRequestVo {
@@ -171,14 +178,12 @@ public class BizRequestVo {
 	@ErrorDesc(errorMsg = "data is null !")//自定义返回结果
     private String data;
 }
-
 //需要校验的Java对象
 public class BizRequestVo {
 	@ParamExpressionCheck(">5")
 	@ErrorDesc(errorMsg = "data不大于5，错误!")//自定义返回结果
     private int data;
 }
-
 //需要校验的Java对象
 public class BizRequestVo {
     // 不满足>5 这个条件的时候调用CustomDataErroHander.handle(bizRequestVo)方法
@@ -186,7 +191,6 @@ public class BizRequestVo {
 	@ParamValidHandler("com.XXX.XXX.param.check.handler.CustomDataErroHander")//自定义返回结果
     private int data;
 }
-
 /**
  *自定义字段校验处理接口
  */
@@ -205,6 +209,7 @@ class CustomDataErroHander implements ParamErrorHander{
     }
 }
 ```
+
 除了表达式以外我们可以配置自定义的校验类(如：	@ParamValidHandler("com.XXX.XXX.param.check.handler.CustomDataChecker"))，但是同样要避免本末倒置。如果为这些自定义的字段定义的校验处理类多的话就变得复杂了，只有很复杂的业务逻辑校验比如依赖有别的RPC交互或者与库进行交互的时候才做这种判断，但是这个时候也考虑将这些逻辑放到主流程去。同样原则是尽量抽取通用的逻辑做这种处理。所以大多数应用场景下我们使用自定义返回码和返回结果比较多，也足够了。更多定制的部分放到业务处理方法本身去处理。结合现状1，2
 
 ```
